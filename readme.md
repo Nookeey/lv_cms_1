@@ -1,7 +1,10 @@
 <pre>
-composer require laravel/passport
-php artisan migrate
-php artisan passport:install
+1. config db in .env file
+2. do:
+    composer install
+    composer require laravel/passport
+    php artisan migrate
+    php artisan passport:install
 </pre>
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
