@@ -12,6 +12,8 @@ class PagesController extends Controller
     /**
      * issetPage
      * 
+     * @param string name of new page
+     * 
      * @return boolean
      */
     private function issetPage($name)
@@ -24,6 +26,8 @@ class PagesController extends Controller
     /**
      * issetSlug
      * 
+     * @param string slug of new page
+     * 
      * @return boolean
      */
     private function issetSlug($slug)
@@ -35,6 +39,11 @@ class PagesController extends Controller
 
     /**
      * pages/add
+     * 
+     * @param string name | required
+     * @param string slug | required
+     * 
+     * @return void
      */
     public function addPage(Request $request)
     {
@@ -61,7 +70,10 @@ class PagesController extends Controller
 
     /**
      * pages/{id}
-     * return one page
+     * 
+     * @param integer id | required
+     * 
+     * @return one page
      */
     public function getPage($id)
     {
@@ -71,7 +83,8 @@ class PagesController extends Controller
 
     /**
      * pages
-     * return all pagess list
+     * 
+     * @return all pagess list
      */
     public function getPagesList()
     {
@@ -81,6 +94,10 @@ class PagesController extends Controller
 
     /**
      * pages/set-visible/{id}
+     * 
+     * @param integer id | required
+     * 
+     * @return void
      */
     public function setPageVisible($id)
     {
@@ -92,6 +109,10 @@ class PagesController extends Controller
 
     /**
      * pages/set-invisible/{id}
+     * 
+     * @param integer id | required
+     * 
+     * @return void
      */
     public function setPageInvisible($id)
     {
@@ -103,6 +124,10 @@ class PagesController extends Controller
 
     /**
      * pages/delete/{id}
+     * 
+     * @param integer id | required
+     * 
+     * @return void
      */
     public function deletePage($id)
     {
@@ -113,6 +138,8 @@ class PagesController extends Controller
 
     /**
      * pages/update-content/{id}
+     * 
+     * @param string content | optional
      */
     public function updateContent(Request $request, $id)
     {
