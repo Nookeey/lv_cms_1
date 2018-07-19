@@ -30,14 +30,16 @@ Route::group(['middleware' => 'auth:api'], function() {
  * PAGES 
  */
 
-Route::group(['middleware' => 'auth:api'], function() {
+Route::group(['middleware' => ['auth:api','cors']], function() {
     Route::post('pages/add', 'Api\PagesController@addPage');
     Route::put('pages/set-visible/{id}', 'Api\PagesController@setPageVisible');
     Route::put('pages/set-invisible/{id}', 'Api\PagesController@setPageInvisible');
     Route::delete('pages/delete/{id}', 'Api\PagesController@deletePage');
     Route::post('pages/update-content/{id}', 'Api\PagesController@updateContent');
 });
-Route::get('pages/{id}', 'Api\PagesController@getPage');
-Route::get('pages', 'Api\PagesController@getPagesList');
+Route::group(['middleware' => ['cors']], function() {
+    Route::get('pages/{id}', 'Api\PagesController@getPage');
+    Route::get('pages', 'Api\PagesController@getPagesList');
+});
 
 

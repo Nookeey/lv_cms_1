@@ -26,7 +26,7 @@ class UserController extends Controller
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
-        } 
+        }
     }
     
     /** 
