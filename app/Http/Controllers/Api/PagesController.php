@@ -140,6 +140,7 @@ class PagesController extends Controller
      * pages/update-content/{id}
      * 
      * @param string content | optional
+     * @param integer id | required
      */
     public function updateContent(Request $request, $id)
     {
@@ -149,5 +150,9 @@ class PagesController extends Controller
         return response()->json($page);
     }
 }
+
+/**
+ * http://sip.umradom.pl/inteligentne_specjalizacje_motorem_rozwoju_lokalnego_rynku_pracy.html?PHPSESSID1=
+ */
 
 
