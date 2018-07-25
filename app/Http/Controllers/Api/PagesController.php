@@ -6,9 +6,30 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Pages;
 use Validator;
+use App\ApiKeys;
 
 class PagesController extends Controller
 {
+    /**
+     * chcekApiKey
+     * @param apiKey
+     * @return boolean
+    */
+    private function chcekApiKey($key) {
+        $apiKeys = new ApiKeys();
+        return $apiKeys->chcekApiKey($key);
+    }
+    
+    /**
+     * error Invalid Api Key
+     * 
+     * @return info
+     */
+    private function invalidApiKey() {
+        $apiInfo = new ApiKeys();
+        return response()->json(['error' =>  $apiInfo->invalidApiKey()]);
+    }
+
     /**
      * issetPage
      * 
@@ -21,7 +42,7 @@ class PagesController extends Controller
         $page = Pages::where('name', $name)->first();
         if (count($page)==0) return false;
         return true;
-    }
+    }                                                   
 
     /**
      * issetSlug
@@ -37,8 +58,14 @@ class PagesController extends Controller
         return false;
     }
 
+    /** 
+     * ==========================================================================================================
+     * ========================================================================================================== 
+     * ========================================================================================================== 
+     */
+
     /**
-     * pages/add
+     * pages/add/key/{key}
      * 
      * @param string name | required
      * @param string slug | required
@@ -47,7 +74,7 @@ class PagesController extends Controller
      */
     public function addPage(Request $request)
     {
-        $validator = Validator::make($request->all(), [ 
+        $validator = Validator::make($request->all(), [
             'name' => 'required|min:1',
             'slug' => 'required|min:1'
         ]);
@@ -69,90 +96,111 @@ class PagesController extends Controller
     }
 
     /**
-     * pages/{id}
+     * pages/{id}/key/{key}
      * 
      * @param integer id | required
+     * @param string key | required
      * 
      * @return one page
      */
-    public function getPage($id)
+    public function getPage($id, $key)
     {
-        $page = Pages::find($id);
-        return response()->json($page);
+        if($this->chcekApiKey($key)) {
+            $page = Pages::find($id);
+            return response()->json($page);
+        }
+        return $this->invalidApiKey();
     }
 
     /**
-     * pages
+     * pages/key/{key}
+     * 
+     * @param string key | required
      * 
      * @return all pagess list
      */
-    public function getPagesList()
+    public function getPagesList($key)
     {
-        $pages = Pages::all();
-        return response()->json($pages);
+        if($this->chcekApiKey($key)) {
+            $pages = Pages::all();
+            return response()->json($pages);
+        }
+        return $this->invalidApiKey();
     }
 
     /**
-     * pages/set-visible/{id}
+     * pages/{id}/set-visible//key/{key}
      * 
      * @param integer id | required
+     * @param string key | required
      * 
      * @return void
      */
-    public function setPageVisible($id)
+    public function setPageVisible($id, $key)
     {
-        $page = Pages::find($id);
-        $page->visibility = 1;
-        $page->save();
-        return response()->json($page);
+        if($this->chcekApiKey($key)) {
+            $page = Pages::find($id);
+            $page->visibility = 1;
+            $page->save();
+            return response()->json($page);
+        }
+        return $this->invalidApiKey();
     }
 
     /**
-     * pages/set-invisible/{id}
+     * pages/{id}/set-invisible/key/{key}
      * 
      * @param integer id | required
+     * @param string key | required
      * 
      * @return void
      */
-    public function setPageInvisible($id)
+    public function setPageInvisible($id, $key)
     {
-        $page = Pages::find($id);
-        $page->visibility = 0;
-        $page->save();
-        return response()->json($page);
+        if($this->chcekApiKey($key)) {
+            $page = Pages::find($id);
+            $page->visibility = 0;
+            $page->save();
+            return response()->json($page);
+        }
+        return $this->invalidApiKey();
     }
 
     /**
-     * pages/delete/{id}
+     * pages/{id}/delete/key/{key}
      * 
      * @param integer id | required
+     * @param string key | required
      * 
      * @return void
      */
-    public function deletePage($id)
+    public function deletePage($id, $key)
     {
-        $page = Pages::find($id);
-        $page->delete();
-        return response()->json(['success'=>'Podstrona została usunięta.']);
+        if($this->chcekApiKey($key)) {
+            $page = Pages::find($id);
+            $page->delete();
+            return response()->json(['success'=>'Podstrona została usunięta.']);
+        }
+        return $this->invalidApiKey();
     }
 
     /**
-     * pages/update-content/{id}
+     * pages/{id}/update-content/key/{key}
      * 
      * @param string content | optional
      * @param integer id | required
+     * @param string key | required
      */
-    public function updateContent(Request $request, $id)
+    public function updateContent(Request $request, $id, $key)
     {
-        $page = Pages::find($id);
-        $page->content = $request->content;
-        $page->save();
-        return response()->json($page);
+        if($this->chcekApiKey($key)) {
+            $page = Pages::find($id);
+            $page->content = $request->content;
+            $page->save();
+            return response()->json($page);
+        }
+        return $this->invalidApiKey();
+        
     }
 }
-
-/**
- * http://sip.umradom.pl/inteligentne_specjalizacje_motorem_rozwoju_lokalnego_rynku_pracy.html?PHPSESSID1=
- */
-
 

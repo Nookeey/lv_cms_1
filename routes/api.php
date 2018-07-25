@@ -18,10 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-// Route::group(['middleware' => ['cors']], function() {
-    Route::post('login', 'Api\UserController@login');
-    Route::post('register', 'Api\UserController@register');
-// });
+Route::post('login', 'Api\UserController@login');
+Route::post('register', 'Api\UserController@register');
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('details', 'Api\UserController@details');
     Route::get('all-users', 'Api\UserController@getAllUsers');
@@ -32,15 +30,43 @@ Route::group(['middleware' => 'auth:api'], function() {
  * PAGES 
  */
 Route::group(['middleware' => ['auth:api']], function() {
-    Route::post('pages/add', 'Api\PagesController@addPage');
-    Route::put('pages/set-invisible/{id}', 'Api\PagesController@setPageInvisible');
-    Route::put('pages/set-visible/{id}', 'Api\PagesController@setPageVisible');
-    Route::delete('pages/delete/{id}', 'Api\PagesController@deletePage');
-    Route::post('pages/update-content/{id}', 'Api\PagesController@updateContent');
 });
-// Route::group(['middleware' => ['cors']], function() {
-    Route::get('pages/{id}', 'Api\PagesController@getPage');
-    Route::get('pages', 'Api\PagesController@getPagesList');
-// });
+
+Route::get('pages/{id}/key/{key}', 'Api\PagesController@getPage');
+
+Route::get('pages/key/{key}', 'Api\PagesController@getPagesList');
+
+Route::put('pages/{id}/set-visible/key/{key}', 'Api\PagesController@setPageVisible');
+
+Route::put('pages/{id}/set-invisible/key/{key}', 'Api\PagesController@setPageInvisible');
+
+Route::post('pages/{id}/update-content/key/{key}', 'Api\PagesController@updateContent');
+
+Route::post('pages/add/key/{key}', 'Api\PagesController@addPage');
+
+Route::delete('pages/{id}/delete/key/{key}', 'Api\PagesController@deletePage');
 
 
+
+
+Route::get('randApiKey', function() { 
+    $apikey = ''; 
+    $key_a = ''; 
+    $key_b = ''; 
+    $chars = ''; 
+    $char = 'abcdefghiklmnopqrstvxyzABCDEFGHIKLMNOPQRSTVXYZ'; 
+
+    for ($i=0; $i < 3; $i++) { 
+        $chars .= $char[rand(0,25)]; 
+        $chars .= md5($chars); 
+    } 
+
+    $key_a = md5($chars); 
+    $key_b = $chars.time(); 
+    $key_b = md5($key_b); 
+    $apikey = $key_b.$key_a.md5($key_a.$key_b);
+    
+    print_r($apikey); 
+    echo '<br>'; 
+    print_r(strlen($apikey));
+});
