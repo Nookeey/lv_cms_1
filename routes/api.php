@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
+/**
+ * API KEY GENERATOR
+ */
+Route::get('randApiKey', function() { $apikey = ''; $key_a = ''; $key_b = ''; $chars = ''; $char = 'abcdefghiklmnopqrstvxyzABCDEFGHIKLMNOPQRSTVXYZ'; for ($i=0; $i < 3; $i++) { $chars .= $char[rand(0,45)]; $chars .= md5($chars); } $key_a = md5($chars); $key_b = $chars.time(); $key_b = md5($key_b); $apikey = $key_b.$key_a.md5($key_a.$key_b); print_r($apikey); });
+
+
+/**
+ * AUTH
+ */
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -47,26 +56,3 @@ Route::post('pages/add/key/{key}', 'Api\PagesController@addPage');
 Route::delete('pages/{id}/delete/key/{key}', 'Api\PagesController@deletePage');
 
 
-
-
-Route::get('randApiKey', function() { 
-    $apikey = ''; 
-    $key_a = ''; 
-    $key_b = ''; 
-    $chars = ''; 
-    $char = 'abcdefghiklmnopqrstvxyzABCDEFGHIKLMNOPQRSTVXYZ'; 
-
-    for ($i=0; $i < 3; $i++) { 
-        $chars .= $char[rand(0,25)]; 
-        $chars .= md5($chars); 
-    } 
-
-    $key_a = md5($chars); 
-    $key_b = $chars.time(); 
-    $key_b = md5($key_b); 
-    $apikey = $key_b.$key_a.md5($key_a.$key_b);
-    
-    print_r($apikey); 
-    echo '<br>'; 
-    print_r(strlen($apikey));
-});
